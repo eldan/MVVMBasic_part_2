@@ -15,10 +15,17 @@
             Text="{Binding UserInput}"
             VerticalOptions="Center" />
         <Button
-            Command="{Binding ButtonResetCommand}"
+            Command="{Binding ResetCommand}"
             Text="Reset Field"
             VerticalOptions="Center"
             WidthRequest="100" />
+        <Button
+            Command="{Binding GotoAnotherPageCommand}"
+            Text="Goto Another Page"
+            VerticalOptions="Center"
+            WidthRequest="100" />
+
+        
     </VerticalStackLayout>
 </ContentPage>
 

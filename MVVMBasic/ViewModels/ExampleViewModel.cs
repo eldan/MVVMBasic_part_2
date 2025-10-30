@@ -9,56 +9,71 @@ namespace MVVMBasic.ViewModels
 {
   internal class ExampleViewModel :  ViewModelBase
   {
-    // get and set for MessageForEldan
-    private string messageForEldan;
-    public string MessageForEldan
-    {
-      get { return messageForEldan; }
-      set {
-        // Basic
-        //messageForEldan = value;
-        //PropertyChanged();
-
-        // Even Better
-        if (value != null)
+        #region get and set
+        // get and set for MessageForEldan
+        private string messageForEldan;
+        public string MessageForEldan
         {
-          messageForEldan = value;
-          OnPropertyChanged();
+          get { return messageForEldan; }
+          set {
+            if (value != null)
+            {
+              messageForEldan = value;
+              OnPropertyChanged();
+            }
+          }
         }
-      }
-    }
 
-    // get and set for UserInput
-    public string userInput;
-    public string UserInput
-    {
-      get { return userInput; }
-      set
-      {
-        userInput = value;
-        if (userInput != null && userInput.Length > 5)
+        // get and set for UserInput
+        public string userInput;
+        public string UserInput
         {
-          MessageForEldan = "The field has more than 5 characters";
+          get { return userInput; }
+          set
+          {
+            userInput = value;
+            if (userInput != null && userInput.Length > 5)
+            {
+              MessageForEldan = "The field has more than 5 characters";
+            }
+            else
+            {
+              MessageForEldan = "The field has 5 or fewer characters";
+            }
+            OnPropertyChanged();
+          }
         }
-        else
+        #endregion
+
+        #region Commands
+        public ICommand ResetCommand { get; set; }
+        public ICommand GotoAnotherPageCommand { get; set; }
+        #endregion
+
+        # region constructor
+        public ExampleViewModel() {
+
+            // Defining the Command for a non async Function
+            ResetCommand = new Command(ResetField);
+            // Defining the Command for an async Function
+            GotoAnotherPageCommand = new Command(async () => await GotoAnotherPage());
+        }
+        #endregion
+
+        #region  Methods
+        private void ResetField()
         {
-          MessageForEldan = "The field has 5 or fewer characters";
+          UserInput = "";
+          MessageForEldan = "";
         }
-        OnPropertyChanged();
-      }
-    }
 
-    public ICommand ButtonResetCommand { get; set; }
-    
-    // constructor
-    public ExampleViewModel() {
-      ButtonResetCommand = new Command(ResetField);
-    }
+        private async Task GotoAnotherPage()
+        {
+            MainPage mp = new MainPage();
+            await Application.Current.MainPage.Navigation.PushAsync(mp);
 
-    private void ResetField()
-    {
-      UserInput = "";
-      MessageForEldan = "";
+        }
+        #endregion
+
     }
-  }
 }
